@@ -1,0 +1,7 @@
+node_modules
+python.venv
+.idea
+.serverless
+package.json
+package-lock.json
+sklearn-models
