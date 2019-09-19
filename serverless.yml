@@ -1,0 +1,101 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+service: maprover-infer-airfield # NOTE: update this with your service name
+
+provider:
+  name: aws
+  runtime: python3.6
+  stage: prod
+  region: us-east-1
+
+# you can add packaging information here
+package:
+  exclude:
+    - python.venv/**
+
+functions:
+  infer:
+    handler: infer.inferHandler
+    timeout: 30
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - "logs:CreateLogGroup"
+          - "logs:CreateLogStream"
+          - "logs:PutLogEvents"
+          - "logs:DescribeLogStreams"
+        Resource: "arn:aws:logs:*:*:*"
+      - Effect: "Allow"
+        Action: "lambda:InvokeFunction"
+        Resource: "*"
+      - Effect: "Allow"
+        Action:
+          - "s3:GetObjectAcl"
+          - "s3:PutObject"
+          - "s3:PutObjectAcl"
+          - "s3:PutObjectTagging"
+          - "s3:PutObjectVersionAcl"
+          - "s3:PutObjectVersionTagging"
+        Resource: "*"
+    events:
+      - http:
+          reqValidatorName: 'tileInputValidator'
+          path: infer
+          method: post
+          cors: true
+          private: false
+          request:
+            schema:
+              "application/json": ${file(api-gateway-models/input.json)}
+
+# you can add CloudFormation resource templates here
+resources:
+  Resources:
+    tileInputValidator:
+      Type: "AWS::ApiGateway::RequestValidator"
+      Properties:
+        Name: 'tileInputValidator'
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        ValidateRequestBody: true
+        ValidateRequestParameters: false
+
+plugins:
+  - serverless-python-requirements
+  - serverless-reqvalidator-plugin
+  - serverless-aws-documentation
+  - serverless-plugin-custom-roles
+custom:
+  pythonRequirements:
+    dockerizePip: false
+    zip: true
+    slim: false
+    noDeploy:
+      - boto3
+      - botocore
+      - docutils
+      - jmespath
+      - pip
+      - python-dateutil
+      - s3transfer
+      - setuptools
+      - six
+      - tensorboard
+  documentation:
+    api:
+      info:
+        version: "v0.0.1"
+        title: "Airfield API"
+        description: "Maprover API - Deep learning for a map"
+

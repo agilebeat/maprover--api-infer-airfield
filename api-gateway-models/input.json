@@ -1,0 +1,10 @@
+{
+	"type":"object",
+	"properties": {
+		"z": {"type":"string"},
+		"x": {"type":"string"},
+		"y": {"type":"string"},
+		"tile_base64":{"type":"string"}
+	},
+	"title":"Input"
+}
