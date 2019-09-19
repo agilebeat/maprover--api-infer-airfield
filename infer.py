@@ -6,14 +6,11 @@ except ImportError:
 
 import json
 import boto3
-from PIL import Image
 import numpy as np
 import base64
 import io
 import cv2
-import glob
-import os
-import shutil
+
 
 
 #--- pixel values of airfield

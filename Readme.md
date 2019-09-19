@@ -38,7 +38,7 @@ docker container and have shell terminal: `root@<IMAGE-ID>:/classify-lambda#`
 
    `pip install numpy==1.14.5`
    
-   `pip install pillow glob base64 shutil`
+   `pip install base64`
    
    `pip install opencv-python`
    
