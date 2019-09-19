@@ -36,11 +36,11 @@ docker container and have shell terminal: `root@<IMAGE-ID>:/classify-lambda#`
    
 3. Install packages necessary for lambda in the virtual environment:
 
-   `pip install tensorflow==1.10.0`
+   `pip install numpy==1.14.5`
    
-   `pip install pillow`
+   `pip install pillow glob base64 shutil`
    
-   `pip install sklearn`
+   `pip install opencv-python`
    
 4. Capture python packages in a file so that serverless will know which 
    python packages should be included in zip file containing lambda function
